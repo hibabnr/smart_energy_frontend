@@ -5,7 +5,7 @@
 // La couche métier est dans src/services/api.js
 // ============================================================
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://smartenergy-production-ee06.up.railway.app/api';
 
 // ── STOCKAGE TOKEN ──────────────────────────────────────────
 const TOKEN_KEY = 'cc_token';
