@@ -5,8 +5,7 @@
 // La couche métier est dans src/services/api.js
 // ============================================================
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000 ' + '/api';
-
+const API_URL = (import.meta.env.REACT_APP_API_URL || 'http://localhost:3000') + '/api';
 // ── STOCKAGE TOKEN ──────────────────────────────────────────
 const TOKEN_KEY = 'cc_token';
 
