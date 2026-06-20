@@ -24,6 +24,13 @@ export default function Users() {
       .catch(err => alert('Erreur : ' + err.message))
       .finally(() => setLoading(false));
   }, []);
+  const [availableRooms, setAvailableRooms] = useState([]);
+
+useEffect(() => {
+  api.buildings.getRooms(null)
+    .then(rooms => setAvailableRooms(rooms))
+    .catch(() => {});
+}, []);
 
   const filtered = users.filter(u =>
     u.role === tab &&
@@ -179,16 +186,26 @@ export default function Users() {
               { label:'Matricule',    key:'matricule',    placeholder:'ex: ETU-2025-001',       type:'text'     },
               { label:'Chambre assignée', key:'room',     placeholder:'ex: A-101',              type:'text'     },
             ].map(f => (
-              <div key={f.key} style={{ marginBottom:14 }}>
-                <div style={{ fontSize:11, fontWeight:600, color:C.muted, marginBottom:5, textTransform:'uppercase', letterSpacing:0.4 }}>{f.label}</div>
-                <input
-                  type={f.type}
-                  value={form[f.key]}
-                  onChange={e => setForm(prev => ({ ...prev, [f.key]: e.target.value }))}
-                  placeholder={f.placeholder}
-                  style={{ width:'100%', padding:'10px 12px', borderRadius:8,
-                    border:`1px solid ${C.border}`, fontSize:13, outline:'none', boxSizing:'border-box' }} />
-              </div>
+              // Remplace le champ 'room' dans le .map() des fields — retire-le du tableau
+// et ajoute ce bloc séparé après le champ matricule :
+
+<div style={{ marginBottom:14 }}>
+  <div style={{ fontSize:11, fontWeight:600, color:C.muted, marginBottom:5, 
+    textTransform:'uppercase', letterSpacing:0.4 }}>Chambre assignée</div>
+  <select 
+    value={form.room} 
+    onChange={e => setForm(prev => ({ ...prev, room: e.target.value }))}
+    style={{ width:'100%', padding:'10px 12px', borderRadius:8,
+      border:`1px solid ${C.border}`, fontSize:13, outline:'none', 
+      background:'white', cursor:'pointer' }}>
+    <option value="">— Aucune chambre —</option>
+    {availableRooms.map(r => (
+      <option key={r.db_id} value={r.id}>
+        {r.building} · Chambre {r.id} (Ét. {r.floor})
+      </option>
+    ))}
+  </select>
+</div>
             ))}
 
             {!isEditing && (
