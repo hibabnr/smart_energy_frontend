@@ -186,8 +186,7 @@ useEffect(() => {
               { label:'Matricule',    key:'matricule',    placeholder:'ex: ETU-2025-001',       type:'text'     },
               { label:'Chambre assignée', key:'room',     placeholder:'ex: A-101',              type:'text'     },
             ].map(f => (
-              // Remplace le champ 'room' dans le .map() des fields — retire-le du tableau
-// et ajoute ce bloc séparé après le champ matricule :
+              
 
 <div style={{ marginBottom:14 }}>
   <div style={{ fontSize:11, fontWeight:600, color:C.muted, marginBottom:5, 
