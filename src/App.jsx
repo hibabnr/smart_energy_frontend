@@ -45,7 +45,7 @@ function Shell({ user, onLogout }) {
 
   return (
     <div style={{ display:'flex', height:'100vh', overflow:'hidden' }}>
-      <Sidebar current={page} onNav={setPage} collapsed={collapsed} user={user} />
+<Sidebar current={page} onNav={setPage} collapsed={collapsed} user={user} pendingCount={pendingCount} />
       <div style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden' }}>
         <Topbar
           onToggleSidebar={() => setCollapsed(c => !c)}
@@ -53,7 +53,7 @@ function Shell({ user, onLogout }) {
           onNavigate={setPage}
           currentPage={page}
           user={user}
-          pendingCount={pendingCount} a
+          pendingCount={pendingCount} 
         />
         <main style={{ flex:1, overflowY:'auto', padding:'24px 28px' }} key={page} className="page-enter">
           <PageComponent onNavigate={setPage} />
