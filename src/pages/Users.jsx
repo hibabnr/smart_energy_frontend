@@ -173,39 +173,45 @@ useEffect(() => {
           onClick={() => { setShowAdd(false); setEditUser(null); setForm(EMPTY_FORM); }}>
           <div style={{ background:C.card, borderRadius:16, padding:28, width:440,
             boxShadow:'0 20px 60px rgba(0,0,0,0.2)' }} onClick={e => e.stopPropagation()}>
+      {[
+  { label:'Nom complet',  key:'name',         placeholder:'ex: Ahmed Bensalem',     type:'text'     },
+  { label:'Email',        key:'email',        placeholder:'ex: a.bensalem@univ.dz', type:'email'    },
+  { label: isEditing ? 'Nouveau mot de passe (laisser vide pour ne pas changer)' : 'Mot de passe',
+    key:'mot_de_passe', placeholder:'••••••••', type:'password' },
+  { label:'Matricule',    key:'matricule',    placeholder:'ex: ETU-2025-001',       type:'text'     },
+  { label:'Chambre assignée', key:'room',     placeholder:'ex: A-101',              type:'text'     },
+].map(f => (
+  <div key={f.key} style={{ marginBottom:14 }}>
+    <div style={{ fontSize:11, fontWeight:600, color:C.muted, marginBottom:5,
+      textTransform:'uppercase', letterSpacing:0.4 }}>{f.label}</div>
+
+    {f.key === 'room' ? (
+      <select
+        value={form.room}
+        onChange={e => setForm(prev => ({ ...prev, room: e.target.value }))}
+        style={{ width:'100%', padding:'10px 12px', borderRadius:8,
+          border:`1px solid ${C.border}`, fontSize:13, outline:'none',
+          background:'white', cursor:'pointer' }}>
+        <option value="">— Aucune chambre —</option>
+        {availableRooms.map(r => (
+          <option key={r.db_id} value={r.id}>
+            {r.building} · Chambre {r.id} (Ét. {r.floor})
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        type={f.type}
+        placeholder={f.placeholder}
+        value={form[f.key] || ''}
+        onChange={e => setForm(prev => ({ ...prev, [f.key]: e.target.value }))}
+        style={{ width:'100%', padding:'10px 12px', borderRadius:8,
+          border:`1px solid ${C.border}`, fontSize:13, outline:'none' }}
+      />
+    )}
+  </div>
+))}
             
-            <div style={{ fontSize:16, fontWeight:700, color:C.text, marginBottom:20 }}>
-              {isEditing ? `Modifier ${editUser.name}` : 'Ajouter un utilisateur'}
-            </div>
-
-            {[
-              { label:'Nom complet',  key:'name',         placeholder:'ex: Ahmed Bensalem',     type:'text'     },
-              { label:'Email',        key:'email',        placeholder:'ex: a.bensalem@univ.dz', type:'email'    },
-              { label: isEditing ? 'Nouveau mot de passe (laisser vide pour ne pas changer)' : 'Mot de passe',
-                key:'mot_de_passe', placeholder:'••••••••', type:'password' },
-              { label:'Matricule',    key:'matricule',    placeholder:'ex: ETU-2025-001',       type:'text'     },
-              { label:'Chambre assignée', key:'room',     placeholder:'ex: A-101',              type:'text'     },
-            ].map(f => (
-              
-
-<div style={{ marginBottom:14 }}>
-  <div style={{ fontSize:11, fontWeight:600, color:C.muted, marginBottom:5, 
-    textTransform:'uppercase', letterSpacing:0.4 }}>Chambre assignée</div>
-  <select 
-    value={form.room} 
-    onChange={e => setForm(prev => ({ ...prev, room: e.target.value }))}
-    style={{ width:'100%', padding:'10px 12px', borderRadius:8,
-      border:`1px solid ${C.border}`, fontSize:13, outline:'none', 
-      background:'white', cursor:'pointer' }}>
-    <option value="">— Aucune chambre —</option>
-    {availableRooms.map(r => (
-      <option key={r.db_id} value={r.id}>
-        {r.building} · Chambre {r.id} (Ét. {r.floor})
-      </option>
-    ))}
-  </select>
-</div>
-            ))}
 
             {!isEditing && (
               <div style={{ marginBottom:14 }}>
