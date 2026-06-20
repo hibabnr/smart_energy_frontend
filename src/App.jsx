@@ -21,6 +21,21 @@ function Shell({ user, onLogout }) {
   const saved = (() => { try { return JSON.parse(localStorage.getItem('cc_admin') || '{}'); } catch { return {}; } })();
   const [page,      setPage]      = useState(saved.page || 'dashboard');
   const [collapsed, setCollapsed] = useState(saved.collapsed || false);
+    const [pendingCount, setPendingCount] = useState(0);  // ← AJOUTE
+
+    useEffect(() => {
+    const load = () => {
+      import('./services/api.js').then(({ api }) => {
+        api.alerts.getAll()
+          .then(alerts => setPendingCount(alerts.filter(a => a.status === 'pending').length))
+          .catch(() => {});
+      });
+    };
+    load();
+    const id = setInterval(load, 30000);
+    return () => clearInterval(id);
+  }, []);
+
 
   useEffect(() => {
     localStorage.setItem('cc_admin', JSON.stringify({ page, collapsed }));
@@ -38,6 +53,7 @@ function Shell({ user, onLogout }) {
           onNavigate={setPage}
           currentPage={page}
           user={user}
+          pendingCount={pendingCount} a
         />
         <main style={{ flex:1, overflowY:'auto', padding:'24px 28px' }} key={page} className="page-enter">
           <PageComponent onNavigate={setPage} />

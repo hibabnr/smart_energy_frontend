@@ -11,7 +11,7 @@ const NAV_ITEMS = [
  { id:'settings',  label:'Mon profil',           icon:'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2', extra:'M12 11a4 4 0 100-8 4 4 0 000 8z' },
 ];
 
-export default function Sidebar({ current, onNav, collapsed, user, pendingCount = 29 }) {
+export default function Sidebar({ current, onNav, collapsed, user, pendingCount={pendingCount} }) {
   return (
     <div style={{
       width: collapsed ? 64 : 230, flexShrink:0, background:C.sidebar,
